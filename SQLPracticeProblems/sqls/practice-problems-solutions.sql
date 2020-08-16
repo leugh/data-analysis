@@ -125,21 +125,99 @@ select
 	suppliersCountry = suppliers.Country
  from dbo.Suppliers suppliers
 
-											
+/* 54 country_name, total_suppliers, total_customers
+ * schlechte Variante
+ * */
+ with countries as (
+    SELECT distinct
+		country_name	= supplier.Country 
+	  FROM dbo.Suppliers supplier
+	union
+	select distinct
+		country_name	= customer.Country
+	  from dbo.Customers customer
+ )
+ , suppliers as (
+ 	SELECT
+		country_name	= supplier.Country
+		, anzahl		= COUNT(*) 
+	  FROM dbo.Suppliers supplier
+  group by supplier.Country
+ )
+ , customers as (
+ 	SELECT
+		country_name	= customer.Country
+		, anzahl		= COUNT(*) 
+	  FROM dbo.Customers customer
+  group by customer.Country
+ )
+   select
+ 		countries.country_name
+ 		, COALESCE(suppliers.anzahl, 0)	as supplier_anzahl
+ 		, COALESCE(customers.anzahl, 0)	as customer_anzahl
+     from countries
+left join suppliers on suppliers.country_name = countries.country_name
+left join customers on customers.country_name = countries.country_name
 												
 												
+/* 54 country_name, total_suppliers, total_customers
+ * gute Variante
+ * */												
+with suppliers as (
+ 	SELECT
+		country_name	= supplier.Country
+		, anzahl		= COUNT(*) 
+	  FROM dbo.Suppliers supplier
+  group by supplier.Country
+ )
+ , customers as (
+ 	SELECT
+		country_name	= customer.Country
+		, anzahl		= COUNT(*) 
+	  FROM dbo.Customers customer
+  group by customer.Country
+ )
+        select
+ 			country_name 		= COALESCE(suppliers.country_name, customers.country_name)
+ 			, anzahl_supplier 	= COALESCE(suppliers.anzahl, 0)
+ 			, anzahl_customers  = COALESCE(customers.anzahl, 0)
+           from suppliers
+full outer join customers on customers.country_name = suppliers.country_name
+	   order by 1
 												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
+/* 55
+ * */
+with order_row_numbers as (
+	select
+		order_row_number = ROW_NUMBER() OVER(
+			PARTITION BY order_.ShipCountry ORDER BY order_.ShipCountry, order_.OrderDate asc
+			)
+		, order_.OrderID
+		, order_.CustomerID
+	  from dbo.Orders order_
+)
+    select
+		order_.ShipCountry
+		, order_.CustomerID
+		, order_row_numbers.OrderID
+		, order_.OrderDate
+      from order_row_numbers
+inner join dbo.Orders order_ on order_.OrderID = order_row_numbers.OrderID
+     where order_row_numbers.order_row_number = 1
+  order by order_.ShipCountry
+
+/*
+ * 56
+ * 
+ * More than one order in a five day period
+ * */
+  
+  
+    select
+		-- order_from.OrderDate - order_to.OrderDate
+		order_from.OrderDate
+		, order_to.OrderDate
+      from dbo.Orders order_from
+inner join dbo.Orders order_to on order_to.
 												
   
