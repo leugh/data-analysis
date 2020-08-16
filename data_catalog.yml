@@ -1,0 +1,8 @@
+WikiSQL.dev.tables.jsonl:
+  type: jsonl
+  description: Contains with their schema defintion (column names + types)+ data-.
+  Column names are not ready for a database (e. g. for one colum name "Years in Toronto")
+  Among others, I use this file to generate
+  the mapping between a column's original name and its 'clean' (e. g. slugified name)
+  that can be used in a database.
+  path: vendors/WikiSQL/data/
