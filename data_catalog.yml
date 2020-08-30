@@ -12,8 +12,13 @@ sqlova:results_dev.jsonl:
 
       ' Examples for the conditions: [[3, 0, '4th, atlantic division']]}
       3 = column index
-      0 = {1, 2} stands for {<, >}
+      0 = {0, 1, 2} stands for {=, <, >}
       "'4th, atlantic division'" = content of where-clause
+
+      'aggregations: 
+        Example: {agg: 3, sel: 5, conds: [[1, 0, '3']]}
+        ' agg: {1, 2, 3} stands for: max, min, count
+      '
   path: results_from_sqlova/
 
 
