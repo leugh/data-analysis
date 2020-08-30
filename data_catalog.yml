@@ -1,8 +1,29 @@
-WikiSQL.dev.tables.jsonl:
+"""
+Everything before ':' indicates the vendor
+"""
+sqlova:results_dev.jsonl:
   type: jsonl
-  description: Contains with their schema defintion (column names + types)+ data-.
+  description:
+      each entry in path_text2sql_results contains
+        _ the final sql
+        _ all components of the sql (selects, conditions, aggregations..)
+        _ he table-id representing the table against which this sql is executed
+        _ the human-readable question for the sql
+
+      ' Examples for the conditions: [[3, 0, '4th, atlantic division']]}
+      3 = column index
+      0 = {1, 2} stands for {<, >}
+      "'4th, atlantic division'" = content of where-clause
+  path: results_from_sqlova/
+
+
+WikiSQL:dev.tables.jsonl:
+  type: jsonl
+  description: Contains tables with their schema defintion (column names + types) and the data
+  data for these tables.
   Column names are not ready for a database (e. g. for one colum name "Years in Toronto")
   Among others, I use this file to generate
   the mapping between a column's original name and its 'clean' (e. g. slugified name)
   that can be used in a database.
+  I also use this file as the basis for putting each table data into a single csv-file
   path: vendors/WikiSQL/data/
