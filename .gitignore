@@ -2,3 +2,4 @@
 vendors/
 data/
 .ipynb_checkpoints
+data-analysis/notebooks/__pycache__/
