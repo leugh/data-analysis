@@ -13,6 +13,7 @@ def slugify(value):
     value = re.sub('[^\w\s-]', '', value).strip().lower()
     value = re.sub('[^\w\s-]', '', value).strip().lower()
     value = value.replace(' ', '_')
+    value = value.replace('-', '_')
     return value
 
 
