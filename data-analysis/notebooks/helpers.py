@@ -17,6 +17,25 @@ def slugify(value):
     return value
 
 
-def get_table_id(result):
+import pandas as pd
+def get_table_name_for_table_id(table_id):
+    # holds the table_id in one column and the table_name in the other column
+    mapping_table_id_table_name = pd.read_csv(
+        "../data/01_raw/wiki-sql/schema_infos/mapping_table_id_table_name.csv"
+        ,  sep = '\t'
+    )
+    
+    
+    # get the table_name using table_id
+    table_name = list(mapping_table_id_table_name[
+        mapping_table_id_table_name["table_id"]==table_id
+    ]["table_name"])[0]
+    
+    
+    return table_name
+
+
+
+def extract_table_id_from_result(result):
     table_id = result["id"]
     return table_id
