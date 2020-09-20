@@ -1,6 +1,10 @@
 """
 Everything before ':' indicates the vendor
 """
+
+mapping_table_id_table_name.csv:
+  type: csv
+  description: Contains the mapping between a table_id and the correct table_name.
 sqlova:results_dev.jsonl:
   type: jsonl
   description:
